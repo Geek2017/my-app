@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="theme-color" content="#000000">
+    <!--
+      manifest.json provides metadata used when your web app is added to the
+      homescreen on Android. See https://developers.google.com/web/fundamentals/engage-and-retain/web-app-manifest/
+    -->
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json">
+    <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
+     <link rel="css" href="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.4.1/css/foundation.min.css">
+    <!--
+      Notice the use of %PUBLIC_URL% in the tags above.
+      It will be replaced with the URL of the `public` folder during the build.
+      Only files inside the `public` folder can be referenced from the HTML.
+
+      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
+      work correctly both with client-side routing and a non-root public URL.
+      Learn how to configure a non-root public URL by running `npm run build`.
+    -->
+    <title>React App</title>
+  </head>
+  <body>
+    
+<div id="nav" style="display:none;">       
+<div class="top-bar">
+  <div class="top-bar-left">
+    <ul class="dropdown menu" data-dropdown-menu>
+      <li class="menu-text">Super Foods</li>
+      <li>
+        <a href="#">One</a>
+        
+      </li>
+      <li><a href="#">Two</a></li>
+      <li><a href="#">Three</a></li>
+    </ul>
+  </div>
+  <div class="top-bar-right">
+    <ul class="menu">
+      <li><input type="search" placeholder="Search"/></li>
+      <li><button type="button" class="button">Search</button></li>
+    </ul>
+  </div>
+</div>
+
+<ul class="vertical menu accordion-menu" data-accordion-menu data-submenu-toggle="true">
+  <li>
+    <a href="http://foundation.zurb.com/">Navigation Test</a>
+    <ul class="menu vertical nested">
+      <li>
+        <a href="#">Item 1A</a>
+        <ul class="menu vertical nested">
+          <li><a href="#">Item 1Ai</a></li>
+          <li><a href="#">Item 1Aii</a></li>
+          <li><a href="#">Item 1Aiii</a></li>
+        </ul>
+      </li>
+      <li><a href="#">Item 1B</a></li>
+      <li><a href="#">Item 1C</a></li>
+    </ul>
+  </li>
+  <li>
+    <a href="#">Item 2</a>
+    <ul class="menu vertical nested">
+      <li><a href="#">Item 2A</a></li>
+      <li><a href="#">Item 2B</a></li>
+    </ul>
+  </li>
+  <li><a href="#">Item 3</a></li>
+</ul>
+</div>     
+<div id="root"></div>    
+
+      
+  </body>
+    
+</html>
