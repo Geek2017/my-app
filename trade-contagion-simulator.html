@@ -249,6 +249,7 @@
       <button class="preset" data-preset="twin">Twin shock: US &amp; EU −25%</button>
       <button class="preset" data-preset="oil">Oil crash −40%</button>
       <button class="preset" data-preset="taiwanCut">Taiwan supply cutoff</button>
+      <button class="preset" data-preset="russiaCut">Russia energy cutoff</button>
       <button class="preset reset" data-preset="reset">Reset all</button>
     </div>
   </div>
@@ -270,9 +271,12 @@
     Dependency shares, debt ratios, reserve buffers, remittance and commodity exposures are
     approximate 2024–25 figures; the Philippines' US export share (30%) is intentionally set
     above its goods-only figure to capture BPO revenue. Supply criticality (Taiwan chips, Gulf
-    oil) is a stylized leverage factor, not measured input-output data. Financial and currency
-    contagion between third countries is still absent. No recovery dynamics; ASEAN and the EU
-    are treated as single blocs.</p>
+    and Russian energy) is a stylized leverage factor, not measured input-output data. Russia's
+    links are modelled post-2022, concentrated on China and India, and its reserve buffer is
+    discounted for frozen assets; the energy-cutoff preset also lifts commodity prices, since a
+    Russian supply stop would spike them. Indonesia is broken out of the ASEAN bloc, which is
+    reduced accordingly to avoid double-counting. Financial and currency contagion between third
+    countries is still absent. No recovery dynamics; ASEAN-other and the EU remain blocs.</p>
 </div>
 
 <script>
@@ -292,20 +296,20 @@ const ECON = {
          vietnam: 0.005, philippines: 0.005 } },
   china:       { name: 'China',        flag: '🇨🇳', gdp: 18.5, xg: 0.19, debt: 90, res: 0.45, com: 0.05, crit: 1.6,
     d: { usa: 0.15, eu: 0.15, asean: 0.08, japan: 0.04, korea: 0.04, vietnam: 0.04, india: 0.03,
-         uk: 0.02, taiwan: 0.02, mexico: 0.02, australia: 0.02, brazil: 0.02, canada: 0.01,
-         philippines: 0.01, saudi: 0.01 } },
+         uk: 0.02, taiwan: 0.02, mexico: 0.02, australia: 0.02, brazil: 0.02, russia: 0.03,
+         indonesia: 0.02, canada: 0.01, philippines: 0.01, saudi: 0.01 } },
   eu:          { name: 'EU',           flag: '🇪🇺', gdp: 19.5, xg: 0.22, debt: 82, res: 0.30, com: 0.10, crit: 1.2,
     d: { usa: 0.20, uk: 0.13, china: 0.09, asean: 0.03, japan: 0.02, korea: 0.02, india: 0.02,
          canada: 0.02, brazil: 0.02, saudi: 0.02, mexico: 0.01, australia: 0.01, taiwan: 0.01,
-         vietnam: 0.005 } },
+         russia: 0.01, vietnam: 0.005 } },
   japan:       { name: 'Japan',        flag: '🇯🇵', gdp: 4.1,  xg: 0.18, debt: 250, res: 0.40, com: 0.02, crit: 1.3,
-    d: { usa: 0.20, china: 0.18, asean: 0.10, eu: 0.09, korea: 0.07, taiwan: 0.06, vietnam: 0.03,
-         india: 0.02, australia: 0.02, uk: 0.02, philippines: 0.02, mexico: 0.01, canada: 0.01,
-         saudi: 0.01 } },
+    d: { usa: 0.20, china: 0.18, asean: 0.07, eu: 0.09, korea: 0.07, taiwan: 0.06, vietnam: 0.03,
+         indonesia: 0.03, india: 0.02, australia: 0.02, uk: 0.02, philippines: 0.02, mexico: 0.01,
+         canada: 0.01, saudi: 0.01, russia: 0.005 } },
   korea:       { name: 'South Korea',  flag: '🇰🇷', gdp: 1.8,  xg: 0.36, debt: 55, res: 0.30, com: 0.05, crit: 1.6,
     d: { china: 0.20, usa: 0.19, eu: 0.09, vietnam: 0.09, asean: 0.08, japan: 0.04, india: 0.03,
          taiwan: 0.02, mexico: 0.02, australia: 0.02, philippines: 0.02, uk: 0.01, saudi: 0.01,
-         canada: 0.01 } },
+         canada: 0.01, russia: 0.01, indonesia: 0.02 } },
   vietnam:     { name: 'Vietnam',      flag: '🇻🇳', gdp: 0.45, xg: 0.85, debt: 34, res: 0.15, com: 0.10, crit: 1.0,
     remit: { usa: 0.020, japan: 0.005, korea: 0.004, taiwan: 0.003 },
     d: { usa: 0.29, china: 0.15, eu: 0.12, japan: 0.06, korea: 0.06, asean: 0.06, india: 0.02,
@@ -324,26 +328,36 @@ const ECON = {
          india: 0.01 } },
   india:       { name: 'India',        flag: '🇮🇳', gdp: 4.0,  xg: 0.21, debt: 82, res: 0.35, com: 0.15, crit: 1.1,
     remit: { usa: 0.010, saudi: 0.006, eu: 0.004, uk: 0.002 },
-    d: { usa: 0.18, eu: 0.15, asean: 0.06, china: 0.04, uk: 0.03, saudi: 0.03, japan: 0.01,
-         korea: 0.01, vietnam: 0.01, australia: 0.01, brazil: 0.01, canada: 0.01, mexico: 0.01 } },
+    d: { usa: 0.18, eu: 0.15, asean: 0.06, china: 0.04, uk: 0.03, saudi: 0.03, russia: 0.02,
+         japan: 0.01, korea: 0.01, vietnam: 0.01, australia: 0.01, brazil: 0.01, canada: 0.01,
+         mexico: 0.01 } },
   taiwan:      { name: 'Taiwan',       flag: '🇹🇼', gdp: 0.8,  xg: 0.60, debt: 25, res: 0.50, com: 0.02, crit: 3.0,
-    d: { china: 0.25, usa: 0.23, asean: 0.15, eu: 0.07, japan: 0.06, korea: 0.04, vietnam: 0.03,
-         india: 0.02, philippines: 0.02, mexico: 0.01, australia: 0.01, uk: 0.01 } },
+    d: { china: 0.25, usa: 0.23, asean: 0.11, eu: 0.07, japan: 0.06, korea: 0.04, indonesia: 0.04,
+         vietnam: 0.03, india: 0.02, philippines: 0.02, mexico: 0.01, australia: 0.01, uk: 0.01 } },
   uk:          { name: 'UK',           flag: '🇬🇧', gdp: 3.5,  xg: 0.17, debt: 100, res: 0.15, com: 0.10, crit: 1.0,
     d: { eu: 0.42, usa: 0.15, china: 0.05, japan: 0.02, india: 0.02, canada: 0.02, australia: 0.02,
          korea: 0.01, saudi: 0.01, brazil: 0.005, mexico: 0.005 } },
   brazil:      { name: 'Brazil',       flag: '🇧🇷', gdp: 2.2,  xg: 0.15, debt: 85, res: 0.30, com: 0.65, crit: 1.2,
     d: { china: 0.28, eu: 0.14, usa: 0.11, asean: 0.03, japan: 0.02, india: 0.02, mexico: 0.02,
-         korea: 0.01, canada: 0.01, uk: 0.01, saudi: 0.01 } },
+         korea: 0.01, canada: 0.01, uk: 0.01, saudi: 0.01, russia: 0.01 } },
   australia:   { name: 'Australia',    flag: '🇦🇺', gdp: 1.8,  xg: 0.22, debt: 50, res: 0.15, com: 0.70, crit: 1.5,
-    d: { china: 0.33, japan: 0.12, asean: 0.08, korea: 0.07, usa: 0.06, india: 0.05, eu: 0.04,
-         taiwan: 0.04, vietnam: 0.02, uk: 0.01 } },
-  asean:       { name: 'ASEAN-other',  flag: '🌏', gdp: 2.5,  xg: 0.45, debt: 55, res: 0.20, com: 0.30, crit: 1.2,
-    d: { china: 0.16, usa: 0.14, eu: 0.09, japan: 0.07, korea: 0.04, india: 0.04, taiwan: 0.03,
-         vietnam: 0.03, australia: 0.02, uk: 0.01, saudi: 0.01, mexico: 0.005, canada: 0.005 } },
+    d: { china: 0.33, japan: 0.12, korea: 0.07, usa: 0.06, asean: 0.05, india: 0.05, eu: 0.04,
+         taiwan: 0.04, indonesia: 0.03, vietnam: 0.02, uk: 0.01 } },
+  asean:       { name: 'ASEAN-other',  flag: '🌏', gdp: 1.5,  xg: 0.60, debt: 60, res: 0.30, com: 0.20, crit: 1.3,
+    d: { china: 0.16, usa: 0.14, eu: 0.09, japan: 0.07, korea: 0.04, india: 0.04, indonesia: 0.04,
+         taiwan: 0.03, vietnam: 0.03, australia: 0.02, uk: 0.01, saudi: 0.01, russia: 0.01,
+         mexico: 0.005, canada: 0.005 } },
+  indonesia:   { name: 'Indonesia',    flag: '🇮🇩', gdp: 1.4,  xg: 0.22, debt: 39, res: 0.20, com: 0.50, crit: 1.4,
+    remit: { saudi: 0.003, asean: 0.003, usa: 0.002, taiwan: 0.002 },
+    d: { china: 0.25, usa: 0.11, asean: 0.10, india: 0.08, japan: 0.08, eu: 0.07, korea: 0.05,
+         taiwan: 0.03, philippines: 0.03, australia: 0.02, vietnam: 0.02, uk: 0.01,
+         brazil: 0.005, russia: 0.005 } },
   saudi:       { name: 'Saudi Arabia', flag: '🇸🇦', gdp: 1.1,  xg: 0.30, debt: 30, res: 0.50, com: 0.85, crit: 2.2,
-    d: { china: 0.16, india: 0.11, japan: 0.10, korea: 0.09, eu: 0.09, asean: 0.07, usa: 0.05,
-         taiwan: 0.03, uk: 0.01, australia: 0.005 } },
+    d: { china: 0.16, india: 0.11, japan: 0.10, korea: 0.09, eu: 0.09, asean: 0.04, usa: 0.05,
+         indonesia: 0.04, taiwan: 0.03, uk: 0.01, australia: 0.005, russia: 0.005 } },
+  russia:      { name: 'Russia',       flag: '🇷🇺', gdp: 2.2,  xg: 0.23, debt: 20, res: 0.25, com: 0.80, crit: 1.8,
+    d: { china: 0.33, india: 0.17, eu: 0.08, asean: 0.05, japan: 0.02, korea: 0.02, brazil: 0.02,
+         taiwan: 0.01, vietnam: 0.01, saudi: 0.01, uk: 0.005, usa: 0.005 } },
 };
 
 const IDS = Object.keys(ECON).sort((a, b) => ECON[b].gdp - ECON[a].gdp);
@@ -516,6 +530,7 @@ const PRESETS = {
   twin:      () => { buyingPower.usa = 75; buyingPower.eu = 75; },
   oil:       () => { $('commodity').value = 60; },
   taiwanCut: () => { supplyCap.taiwan = 0; },
+  russiaCut: () => { supplyCap.russia = 0; $('commodity').value = 115; },
   reset:     () => {},
 };
 document.querySelectorAll('button.preset').forEach(btn => {
