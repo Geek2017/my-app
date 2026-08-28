@@ -93,21 +93,21 @@
   /* ---------- header ---------- */
   header { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 16px; margin-bottom: 6px; }
   h1 { font-size: 26px; font-weight: 800; letter-spacing: -0.02em; margin: 0; text-wrap: balance; }
-  .subtitle { color: var(--ink-2); font-size: 13.5px; margin: 0 0 18px; max-width: 68ch; }
+  .subtitle { color: var(--ink-2); font-size: 13.5px; margin: 0 0 18px; max-width: 72ch; }
 
   /* ---------- global controls ---------- */
   .controls {
-    display: flex; flex-wrap: wrap; gap: 14px 28px; align-items: flex-end;
+    display: flex; flex-wrap: wrap; gap: 14px 26px; align-items: flex-start;
     background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
     padding: 14px 18px; margin-bottom: 16px;
   }
-  .ctl { display: flex; flex-direction: column; gap: 5px; min-width: 220px; flex: 1 1 220px; max-width: 340px; }
+  .ctl { display: flex; flex-direction: column; gap: 5px; min-width: 200px; flex: 1 1 200px; max-width: 320px; }
   .ctl-label { font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-muted); display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
   .ctl-label .val { font-size: 13px; color: var(--ink); letter-spacing: 0; text-transform: none; font-weight: 600; }
   .ctl-hint { font-size: 11.5px; color: var(--ink-muted); }
   .check { display: flex; align-items: center; gap: 7px; font-size: 13px; font-weight: 500; cursor: pointer; padding: 2px 0; }
   .check input { accent-color: var(--accent); width: 15px; height: 15px; margin: 0; cursor: pointer; }
-  .presets { display: flex; flex-wrap: wrap; gap: 8px; flex: 2 1 320px; align-items: center; }
+  .presets { display: flex; flex-wrap: wrap; gap: 8px; flex: 2 1 300px; align-content: flex-start; }
   button.preset {
     font: inherit; font-size: 12.5px; font-weight: 600; color: var(--accent-ink);
     background: transparent; border: 1px solid var(--border); border-radius: 999px;
@@ -129,10 +129,10 @@
   .tile.warn .v { color: var(--warn-ink); }
 
   /* ---------- country grid ---------- */
-  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 10px; margin-bottom: 22px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 10px; margin-bottom: 22px; }
   .card {
     background: var(--surface); border: 1px solid var(--border); border-left: 4px solid var(--hairline);
-    border-radius: 10px; padding: 12px 14px 13px; display: flex; flex-direction: column; gap: 8px;
+    border-radius: 10px; padding: 12px 14px 11px; display: flex; flex-direction: column; gap: 8px;
   }
   .card.s-healthy   { border-left-color: var(--good); }
   .card.s-recession { border-left-color: var(--warn); background: linear-gradient(var(--warn-wash), var(--warn-wash)) var(--surface); }
@@ -165,8 +165,24 @@
 
   .slider-row { display: flex; flex-direction: column; gap: 2px; }
   .slider-row .lbl { display: flex; justify-content: space-between; font-size: 11px; color: var(--ink-muted); }
-  .slider-row .lbl b { color: var(--ink-2); font-variant-numeric: tabular-nums; }
+  .slider-row .lbl b { color: var(--ink-2); font-variant-numeric: tabular-nums; font-weight: 600; }
   .meta { font-size: 11px; color: var(--ink-muted); min-height: 15px; }
+  .breakdown { font-size: 10.5px; color: var(--ink-muted); font-variant-numeric: tabular-nums; min-height: 14px; }
+
+  details.adv { border-top: 1px solid var(--hairline); padding-top: 6px; margin-top: 1px; }
+  details.adv summary {
+    cursor: pointer; font-size: 11px; font-weight: 600; letter-spacing: 0.05em;
+    text-transform: uppercase; color: var(--ink-muted); list-style: none; user-select: none;
+  }
+  details.adv summary::before { content: '▸ '; }
+  details.adv[open] summary::before { content: '▾ '; }
+  details.adv summary::-webkit-details-marker { display: none; }
+  .adv-body { display: flex; flex-direction: column; gap: 7px; padding-top: 8px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 4px 6px; }
+  .chip-f {
+    font-size: 10.5px; color: var(--ink-2); background: var(--surface-2);
+    border-radius: 999px; padding: 2px 8px; font-variant-numeric: tabular-nums;
+  }
 
   /* ---------- cascade timeline ---------- */
   h2 { font-size: 15px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px; }
@@ -200,30 +216,39 @@
     <h1>Trade Contagion</h1>
     <span class="cgdp mono" id="worldGdp"></span>
   </header>
-  <p class="subtitle">Cut buying power in one or more economies and watch the demand shock
-    propagate through export links, round by round, until the network settles. Amplification,
-    collapse threshold, and per-country shocks are all live.</p>
+  <p class="subtitle">Shock any economy — cut its buying power, choke its export supply, crash
+    its currency — and watch the damage propagate through trade links, remittances, and commodity
+    markets, round by round. Debt-to-GDP drives each country's credit fragility and fiscal room;
+    FX reserves raise its collapse resistance. Open a card's levers for the full kit.</p>
 
   <div class="controls">
     <div class="ctl">
       <label class="ctl-label" for="mult">Pain multiplier <span class="val mono" id="multVal"></span></label>
       <input type="range" id="mult" min="1" max="4" step="0.1" value="2">
-      <span class="ctl-hint">Amplifies export losses into GDP damage (layoffs, panic, credit).</span>
+      <span class="ctl-hint">Amplifies income losses into GDP damage (layoffs, panic, credit).</span>
     </div>
     <div class="ctl">
       <label class="ctl-label" for="collapse">Collapse threshold <span class="val mono" id="collapseVal"></span></label>
       <input type="range" id="collapse" min="4" max="25" step="1" value="10">
       <span class="ctl-hint" id="recessionHint"></span>
     </div>
+    <div class="ctl">
+      <label class="ctl-label" for="commodity">Commodity prices <span class="val mono" id="commodityVal"></span></label>
+      <input type="range" id="commodity" min="50" max="120" step="5" value="100">
+      <span class="ctl-hint">Terms-of-trade for commodity exporters (Saudi, Australia, Brazil…). Above 100% is a boom that offsets damage.</span>
+    </div>
     <div class="ctl" style="min-width:190px">
-      <span class="ctl-label">Collapsed demand</span>
-      <label class="check"><input type="checkbox" id="propMode"> Proportional to damage</label>
-      <span class="ctl-hint">Off: a collapsed economy's imports stop entirely. On: they shrink with damage, so −50% is far worse than −10%.</span>
+      <span class="ctl-label">Model options</span>
+      <label class="check"><input type="checkbox" id="propMode"> Proportional collapse</label>
+      <label class="check"><input type="checkbox" id="unempFb"> Unemployment feedback</label>
+      <span class="ctl-hint">Proportional: collapsed demand shrinks with damage instead of stopping. Feedback: damage cuts a country's own spending next round.</span>
     </div>
     <div class="presets" role="group" aria-label="Scenario presets">
       <button class="preset" data-preset="usa30">US demand −30%</button>
       <button class="preset" data-preset="china40">China hard landing −40%</button>
       <button class="preset" data-preset="twin">Twin shock: US &amp; EU −25%</button>
+      <button class="preset" data-preset="oil">Oil crash −40%</button>
+      <button class="preset" data-preset="taiwanCut">Taiwan supply cutoff</button>
       <button class="preset reset" data-preset="reset">Reset all</button>
     </div>
   </div>
@@ -240,70 +265,83 @@
   <h2>Cascade timeline</h2>
   <div class="timeline-wrap"><div class="timeline" id="timeline"></div></div>
 
-  <p class="limits"><b>Model limitations.</b> Demand-side only — no supply cutoffs and no
-    financial or currency contagion, so real outcomes would be worse. Damage can exceed 100%
-    of GDP and is a relative stress score, not literal GDP loss (the world-GDP aggregate caps
-    each economy at 100%). Dependency shares are approximate 2024–25 figures; the Philippines'
-    US share (30%) is intentionally set above its goods-only figure to capture BPO revenue and
-    remittances. No recovery dynamics; ASEAN and the EU are treated as single blocs.</p>
+  <p class="limits"><b>Model limitations.</b> Damage can exceed 100% of GDP and is a relative
+    stress score, not literal GDP loss (the world-GDP aggregate caps each economy at 100%).
+    Dependency shares, debt ratios, reserve buffers, remittance and commodity exposures are
+    approximate 2024–25 figures; the Philippines' US export share (30%) is intentionally set
+    above its goods-only figure to capture BPO revenue. Supply criticality (Taiwan chips, Gulf
+    oil) is a stylized leverage factor, not measured input-output data. Financial and currency
+    contagion between third countries is still absent. No recovery dynamics; ASEAN and the EU
+    are treated as single blocs.</p>
 </div>
 
 <script>
 'use strict';
 
-/* ---------- data: gdp in USD trillions, xg = exports/GDP, d = export-destination shares (sum < 1) ---------- */
+/* ---------- data ----------
+   gdp: USD trillions · xg: exports/GDP · d: export-destination shares (sum < 1)
+   debt: gross govt debt % of GDP  → credit fragility & fiscal room
+   res:  reserve/buffer strength 0–0.5 → raises own collapse threshold
+   com:  commodity share of exports → terms-of-trade exposure
+   crit: supply criticality — leverage of this country's exports as inputs
+   remit: remittance income as share of GDP, by host country            */
 const ECON = {
-  usa:         { name: 'USA',          flag: '🇺🇸', gdp: 29.0, xg: 0.11,
+  usa:         { name: 'USA',          flag: '🇺🇸', gdp: 29.0, xg: 0.11, debt: 120, res: 0.30, com: 0.20, crit: 1.2,
     d: { eu: 0.16, canada: 0.17, mexico: 0.16, china: 0.07, japan: 0.04, uk: 0.04, korea: 0.03,
          asean: 0.03, taiwan: 0.02, india: 0.02, brazil: 0.02, australia: 0.02, saudi: 0.01,
          vietnam: 0.005, philippines: 0.005 } },
-  china:       { name: 'China',        flag: '🇨🇳', gdp: 18.5, xg: 0.19,
+  china:       { name: 'China',        flag: '🇨🇳', gdp: 18.5, xg: 0.19, debt: 90, res: 0.45, com: 0.05, crit: 1.6,
     d: { usa: 0.15, eu: 0.15, asean: 0.08, japan: 0.04, korea: 0.04, vietnam: 0.04, india: 0.03,
          uk: 0.02, taiwan: 0.02, mexico: 0.02, australia: 0.02, brazil: 0.02, canada: 0.01,
          philippines: 0.01, saudi: 0.01 } },
-  eu:          { name: 'EU',           flag: '🇪🇺', gdp: 19.5, xg: 0.22,
+  eu:          { name: 'EU',           flag: '🇪🇺', gdp: 19.5, xg: 0.22, debt: 82, res: 0.30, com: 0.10, crit: 1.2,
     d: { usa: 0.20, uk: 0.13, china: 0.09, asean: 0.03, japan: 0.02, korea: 0.02, india: 0.02,
          canada: 0.02, brazil: 0.02, saudi: 0.02, mexico: 0.01, australia: 0.01, taiwan: 0.01,
          vietnam: 0.005 } },
-  japan:       { name: 'Japan',        flag: '🇯🇵', gdp: 4.1,  xg: 0.18,
+  japan:       { name: 'Japan',        flag: '🇯🇵', gdp: 4.1,  xg: 0.18, debt: 250, res: 0.40, com: 0.02, crit: 1.3,
     d: { usa: 0.20, china: 0.18, asean: 0.10, eu: 0.09, korea: 0.07, taiwan: 0.06, vietnam: 0.03,
          india: 0.02, australia: 0.02, uk: 0.02, philippines: 0.02, mexico: 0.01, canada: 0.01,
          saudi: 0.01 } },
-  korea:       { name: 'South Korea',  flag: '🇰🇷', gdp: 1.8,  xg: 0.36,
+  korea:       { name: 'South Korea',  flag: '🇰🇷', gdp: 1.8,  xg: 0.36, debt: 55, res: 0.30, com: 0.05, crit: 1.6,
     d: { china: 0.20, usa: 0.19, eu: 0.09, vietnam: 0.09, asean: 0.08, japan: 0.04, india: 0.03,
          taiwan: 0.02, mexico: 0.02, australia: 0.02, philippines: 0.02, uk: 0.01, saudi: 0.01,
          canada: 0.01 } },
-  vietnam:     { name: 'Vietnam',      flag: '🇻🇳', gdp: 0.45, xg: 0.85,
+  vietnam:     { name: 'Vietnam',      flag: '🇻🇳', gdp: 0.45, xg: 0.85, debt: 34, res: 0.15, com: 0.10, crit: 1.0,
+    remit: { usa: 0.020, japan: 0.005, korea: 0.004, taiwan: 0.003 },
     d: { usa: 0.29, china: 0.15, eu: 0.12, japan: 0.06, korea: 0.06, asean: 0.06, india: 0.02,
          uk: 0.02, canada: 0.02, australia: 0.01, mexico: 0.01, philippines: 0.01 } },
-  philippines: { name: 'Philippines',  flag: '🇵🇭', gdp: 0.44, xg: 0.25,
+  philippines: { name: 'Philippines',  flag: '🇵🇭', gdp: 0.44, xg: 0.25, debt: 60, res: 0.20, com: 0.08, crit: 1.1,
+    remit: { usa: 0.035, saudi: 0.012, eu: 0.008, asean: 0.008, japan: 0.006, canada: 0.005,
+             uk: 0.004, australia: 0.004 },
     d: { usa: 0.30, china: 0.13, japan: 0.13, eu: 0.10, asean: 0.06, korea: 0.04, taiwan: 0.03,
          india: 0.01, australia: 0.01, canada: 0.01, uk: 0.01, saudi: 0.01 } },
-  mexico:      { name: 'Mexico',       flag: '🇲🇽', gdp: 1.9,  xg: 0.36,
+  mexico:      { name: 'Mexico',       flag: '🇲🇽', gdp: 1.9,  xg: 0.36, debt: 50, res: 0.15, com: 0.10, crit: 1.1,
+    remit: { usa: 0.038 },
     d: { usa: 0.80, eu: 0.04, canada: 0.03, china: 0.02, japan: 0.01, brazil: 0.01, korea: 0.01,
          india: 0.005, uk: 0.005 } },
-  canada:      { name: 'Canada',       flag: '🇨🇦', gdp: 2.2,  xg: 0.33,
+  canada:      { name: 'Canada',       flag: '🇨🇦', gdp: 2.2,  xg: 0.33, debt: 107, res: 0.20, com: 0.45, crit: 1.3,
     d: { usa: 0.76, eu: 0.05, china: 0.04, japan: 0.02, uk: 0.02, mexico: 0.01, korea: 0.01,
          india: 0.01 } },
-  india:       { name: 'India',        flag: '🇮🇳', gdp: 4.0,  xg: 0.21,
+  india:       { name: 'India',        flag: '🇮🇳', gdp: 4.0,  xg: 0.21, debt: 82, res: 0.35, com: 0.15, crit: 1.1,
+    remit: { usa: 0.010, saudi: 0.006, eu: 0.004, uk: 0.002 },
     d: { usa: 0.18, eu: 0.15, asean: 0.06, china: 0.04, uk: 0.03, saudi: 0.03, japan: 0.01,
          korea: 0.01, vietnam: 0.01, australia: 0.01, brazil: 0.01, canada: 0.01, mexico: 0.01 } },
-  taiwan:      { name: 'Taiwan',       flag: '🇹🇼', gdp: 0.8,  xg: 0.60,
+  taiwan:      { name: 'Taiwan',       flag: '🇹🇼', gdp: 0.8,  xg: 0.60, debt: 25, res: 0.50, com: 0.02, crit: 3.0,
     d: { china: 0.25, usa: 0.23, asean: 0.15, eu: 0.07, japan: 0.06, korea: 0.04, vietnam: 0.03,
          india: 0.02, philippines: 0.02, mexico: 0.01, australia: 0.01, uk: 0.01 } },
-  uk:          { name: 'UK',           flag: '🇬🇧', gdp: 3.5,  xg: 0.17,
+  uk:          { name: 'UK',           flag: '🇬🇧', gdp: 3.5,  xg: 0.17, debt: 100, res: 0.15, com: 0.10, crit: 1.0,
     d: { eu: 0.42, usa: 0.15, china: 0.05, japan: 0.02, india: 0.02, canada: 0.02, australia: 0.02,
          korea: 0.01, saudi: 0.01, brazil: 0.005, mexico: 0.005 } },
-  brazil:      { name: 'Brazil',       flag: '🇧🇷', gdp: 2.2,  xg: 0.15,
+  brazil:      { name: 'Brazil',       flag: '🇧🇷', gdp: 2.2,  xg: 0.15, debt: 85, res: 0.30, com: 0.65, crit: 1.2,
     d: { china: 0.28, eu: 0.14, usa: 0.11, asean: 0.03, japan: 0.02, india: 0.02, mexico: 0.02,
          korea: 0.01, canada: 0.01, uk: 0.01, saudi: 0.01 } },
-  australia:   { name: 'Australia',    flag: '🇦🇺', gdp: 1.8,  xg: 0.22,
+  australia:   { name: 'Australia',    flag: '🇦🇺', gdp: 1.8,  xg: 0.22, debt: 50, res: 0.15, com: 0.70, crit: 1.5,
     d: { china: 0.33, japan: 0.12, asean: 0.08, korea: 0.07, usa: 0.06, india: 0.05, eu: 0.04,
          taiwan: 0.04, vietnam: 0.02, uk: 0.01 } },
-  asean:       { name: 'ASEAN-other',  flag: '🌏', gdp: 2.5,  xg: 0.45,
+  asean:       { name: 'ASEAN-other',  flag: '🌏', gdp: 2.5,  xg: 0.45, debt: 55, res: 0.20, com: 0.30, crit: 1.2,
     d: { china: 0.16, usa: 0.14, eu: 0.09, japan: 0.07, korea: 0.04, india: 0.04, taiwan: 0.03,
          vietnam: 0.03, australia: 0.02, uk: 0.01, saudi: 0.01, mexico: 0.005, canada: 0.005 } },
-  saudi:       { name: 'Saudi Arabia', flag: '🇸🇦', gdp: 1.1,  xg: 0.30,
+  saudi:       { name: 'Saudi Arabia', flag: '🇸🇦', gdp: 1.1,  xg: 0.30, debt: 30, res: 0.50, com: 0.85, crit: 2.2,
     d: { china: 0.16, india: 0.11, japan: 0.10, korea: 0.09, eu: 0.09, asean: 0.07, usa: 0.05,
          taiwan: 0.03, uk: 0.01, australia: 0.005 } },
 };
@@ -313,40 +351,94 @@ const WORLD_GDP = IDS.reduce((s, id) => s + ECON[id].gdp, 0);
 const MAX_ROUNDS = 12;
 const EPS = 1e-9;
 
+/* derived fundamentals */
+const clamp = (x, lo, hi) => Math.max(lo, Math.min(hi, x));
+const FRAGILITY = {}, FISCAL_ROOM = {};
+for (const id of IDS) {
+  FRAGILITY[id]   = clamp(0.75 + ECON[id].debt / 240, 0.7, 1.8);      // debt-to-GDP → credit amplification
+  FISCAL_ROOM[id] = clamp(0.18 - ECON[id].debt / 1000, 0.02, 0.16);   // debt-to-GDP → max stimulus relief (pts of damage)
+}
+/* import dependence: i's imports from j as a share of i's GDP (derived from the export map) */
+const IMP_DEP = {};
+for (const i of IDS) {
+  IMP_DEP[i] = {};
+  for (const j of IDS) {
+    if (j === i) continue;
+    const sh = ECON[j].d[i] || 0;
+    if (sh) IMP_DEP[i][j] = ECON[j].gdp * ECON[j].xg * sh / ECON[i].gdp;
+  }
+}
+
 /* ---------- state ---------- */
-const buyingPower = {};
-IDS.forEach(id => { buyingPower[id] = 100; });
+const buyingPower = {}, supplyCap = {}, fxMove = {}, stimPct = {};
+function resetCountryState() {
+  IDS.forEach(id => { buyingPower[id] = 100; supplyCap[id] = 100; fxMove[id] = 0; stimPct[id] = 0; });
+}
+resetCountryState();
 
 /* ---------- cascade algorithm (synchronous rounds) ---------- */
-function simulate(bp, multiplier, collapseT, proportional) {
-  const recessionT = collapseT / 2.5;
-  const drop = {}, damage = {}, status = {};
+function simulate(st, g) {
+  const drop = {}, damage = {}, status = {}, parts = {};
   IDS.forEach(id => { drop[id] = 0; damage[id] = 0; status[id] = 'healthy'; });
 
   const recessionRound = {}, collapseRound = {};
   let roundsElapsed = 0;
+  const commodityGap = (100 - g.commodityPrice) / 100;   // positive = price crash, negative = boom
 
   for (let r = 1; r <= MAX_ROUNDS; r++) {
     const nd = {}, ndmg = {}, nst = {};
     let changed = false;
 
     for (const i of IDS) {
+      const c = ECON[i];
+      /* 1. demand channel: partners buying less of my exports */
       let demandLoss = 0;
-      for (const [j, share] of Object.entries(ECON[i].d)) demandLoss += share * (drop[j] || 0);
-      const forcedDrop = 1 - bp[i] / 100;
-      const dmg = Math.max(demandLoss * ECON[i].xg * multiplier, forcedDrop);
+      for (const [j, share] of Object.entries(c.d)) demandLoss += share * (drop[j] || 0);
+      const fx = st.fx[i] / 100;                             // − = devaluation, + = appreciation
+      const fxComp = clamp(1 + fx * 0.5, 0.5, 1.3);          // devaluation makes exports cheaper
+      const dem = demandLoss * c.xg * g.mult * FRAGILITY[i] * fxComp;
 
-      let st, dr;
-      /* proportional mode stays continuous with the recession branch (both damage x 1.5),
-         so drop doesn't jump backwards at the threshold; it reaches 1 at ~67% damage */
-      if (dmg >= collapseT - EPS)       { st = 'collapsed'; dr = proportional ? Math.min(dmg * 1.5, 1) : 1; }
-      else if (dmg >= recessionT - EPS) { st = 'recession'; dr = Math.min(dmg * 1.5, 0.9); }
-      else                              { st = 'healthy';   dr = Math.min(dmg, 0.5); }
+      /* 2. supply channel: my suppliers stop shipping inputs (criticality-weighted) */
+      let sup = 0;
+      for (const [j, dep] of Object.entries(IMP_DEP[i])) {
+        const cut = 1 - st.supply[j] / 100;
+        if (cut > 0) sup += dep * cut * ECON[j].crit;
+      }
+      sup *= g.mult;
 
-      ndmg[i] = dmg; nst[i] = st; nd[i] = dr;
-      if (st !== status[i] || Math.abs(dr - drop[i]) > EPS) changed = true;
-      if ((st === 'recession' || st === 'collapsed') && !(i in recessionRound)) recessionRound[i] = r;
-      if (st === 'collapsed' && !(i in collapseRound)) collapseRound[i] = r;
+      /* 3. remittance channel: host-country downturns cut income sent home */
+      let rem = 0;
+      if (c.remit) for (const [j, sh] of Object.entries(c.remit)) rem += sh * (drop[j] || 0);
+      rem *= g.mult;
+
+      /* 4. commodity terms-of-trade (negative in a boom — offsets other damage) */
+      const com = c.com * c.xg * commodityGap * g.mult;
+
+      /* 5. forced domestic cuts: buying-power slider + import squeeze from devaluation */
+      const forcedDrop = 1 - st.bp[i] / 100;
+      const importPain = Math.max(0, -fx) * 0.5;
+
+      /* 6. stimulus: fiscal room (set by debt) times how hard the government leans in */
+      const relief = (st.stim[i] / 100) * FISCAL_ROOM[i];
+
+      const raw = Math.max(dem + sup + rem + com, forcedDrop + importPain);
+      const dmg = Math.max(raw - relief, 0);
+
+      /* per-country thresholds: reserves buffer collapse resistance */
+      const collT = g.collapseT * (1 + c.res);
+      const recT = collT / 2.5;
+
+      let s, dr;
+      if (dmg >= collT - EPS)       { s = 'collapsed'; dr = g.proportional ? Math.min(dmg * 1.5, 1) : 1; }
+      else if (dmg >= recT - EPS)   { s = 'recession'; dr = Math.min(dmg * 1.5, 0.9); }
+      else                          { s = 'healthy';   dr = Math.min(dmg, 0.5); }
+      if (g.unempFb) dr = Math.min(dr + 0.3 * dmg, 1);   // damage cuts own spending next round
+
+      ndmg[i] = dmg; nst[i] = s; nd[i] = dr;
+      parts[i] = { dem, sup, rem, com, forced: forcedDrop + importPain, relief, collT, recT };
+      if (s !== status[i] || Math.abs(dr - drop[i]) > EPS) changed = true;
+      if ((s === 'recession' || s === 'collapsed') && !(i in recessionRound)) recessionRound[i] = r;
+      if (s === 'collapsed' && !(i in collapseRound)) collapseRound[i] = r;
     }
 
     Object.assign(drop, nd); Object.assign(damage, ndmg); Object.assign(status, nst);
@@ -354,7 +446,7 @@ function simulate(bp, multiplier, collapseT, proportional) {
     roundsElapsed = r;
   }
 
-  return { damage, status, recessionRound, collapseRound, roundsElapsed };
+  return { damage, status, parts, recessionRound, collapseRound, roundsElapsed };
 }
 
 /* ---------- static DOM ---------- */
@@ -366,6 +458,7 @@ $('worldGdp').textContent = IDS.length + ' economies · $' + Math.round(WORLD_GD
 const cardEls = {};
 for (const id of IDS) {
   const c = ECON[id];
+  const remitTotal = c.remit ? Object.values(c.remit).reduce((a, b) => a + b, 0) : 0;
   const card = document.createElement('div');
   card.className = 'card';
   card.innerHTML =
@@ -377,82 +470,132 @@ for (const id of IDS) {
     '<div class="bar"><div class="fill" data-el="fill"></div><div class="tick" data-el="tickR"></div><div class="tick" data-el="tickC"></div></div>' +
     '<div class="slider-row">' +
       '<div class="lbl"><span id="bp-lbl-' + id + '">Buying power</span><b class="mono" data-el="bpVal">100%</b></div>' +
-      '<input type="range" min="0" max="100" step="5" value="100" data-el="slider" aria-labelledby="bp-lbl-' + id + '">' +
+      '<input type="range" min="0" max="100" step="5" value="100" data-el="bp" aria-labelledby="bp-lbl-' + id + '">' +
     '</div>' +
-    '<div class="meta" data-el="meta"></div>';
+    '<div class="meta" data-el="meta"></div>' +
+    '<div class="breakdown mono" data-el="brk"></div>' +
+    '<details class="adv"><summary>Levers &amp; fundamentals</summary><div class="adv-body">' +
+      '<div class="slider-row">' +
+        '<div class="lbl"><span id="sp-lbl-' + id + '">Export supply capacity</span><b class="mono" data-el="spVal">100%</b></div>' +
+        '<input type="range" min="0" max="100" step="5" value="100" data-el="supply" aria-labelledby="sp-lbl-' + id + '">' +
+      '</div>' +
+      '<div class="slider-row">' +
+        '<div class="lbl"><span id="fx-lbl-' + id + '">Currency vs USD</span><b class="mono" data-el="fxVal">0%</b></div>' +
+        '<input type="range" min="-40" max="20" step="5" value="0" data-el="fx" aria-labelledby="fx-lbl-' + id + '">' +
+      '</div>' +
+      '<div class="slider-row">' +
+        '<div class="lbl"><span id="st-lbl-' + id + '">Fiscal stimulus</span><b class="mono" data-el="stVal">0%</b></div>' +
+        '<input type="range" min="0" max="100" step="10" value="0" data-el="stim" aria-labelledby="st-lbl-' + id + '">' +
+      '</div>' +
+      '<div class="chips">' +
+        '<span class="chip-f">debt ' + c.debt + '% GDP</span>' +
+        '<span class="chip-f">credit ×' + FRAGILITY[id].toFixed(2) + '</span>' +
+        '<span class="chip-f">fiscal room ' + (FISCAL_ROOM[id] * 100).toFixed(1) + 'pt</span>' +
+        '<span class="chip-f">buffer +' + Math.round(c.res * 100) + '%</span>' +
+        '<span class="chip-f">commodities ' + Math.round(c.com * 100) + '%</span>' +
+        (remitTotal ? '<span class="chip-f">remittances ' + (remitTotal * 100).toFixed(1) + '% GDP</span>' : '') +
+        '<span class="chip-f">supply crit ×' + c.crit.toFixed(1) + '</span>' +
+      '</div>' +
+    '</div></details>';
   $('grid').appendChild(card);
 
   const els = { card };
   card.querySelectorAll('[data-el]').forEach(el => { els[el.dataset.el] = el; });
   cardEls[id] = els;
 
-  els.slider.addEventListener('input', () => {
-    buyingPower[id] = +els.slider.value;
-    update();
-  });
+  els.bp.addEventListener('input', () => { buyingPower[id] = +els.bp.value; update(); });
+  els.supply.addEventListener('input', () => { supplyCap[id] = +els.supply.value; update(); });
+  els.fx.addEventListener('input', () => { fxMove[id] = +els.fx.value; update(); });
+  els.stim.addEventListener('input', () => { stimPct[id] = +els.stim.value; update(); });
 }
 
 /* ---------- presets ---------- */
 const PRESETS = {
-  usa30:   { usa: 70 },
-  china40: { china: 60 },
-  twin:    { usa: 75, eu: 75 },
-  reset:   {},
+  usa30:     () => { buyingPower.usa = 70; },
+  china40:   () => { buyingPower.china = 60; },
+  twin:      () => { buyingPower.usa = 75; buyingPower.eu = 75; },
+  oil:       () => { $('commodity').value = 60; },
+  taiwanCut: () => { supplyCap.taiwan = 0; },
+  reset:     () => {},
 };
 document.querySelectorAll('button.preset').forEach(btn => {
   btn.addEventListener('click', () => {
-    const p = PRESETS[btn.dataset.preset];
-    IDS.forEach(id => { buyingPower[id] = (id in p) ? p[id] : 100; });
-    if (btn.dataset.preset === 'reset') { $('mult').value = 2; $('collapse').value = 10; $('propMode').checked = false; }
-    IDS.forEach(id => { cardEls[id].slider.value = buyingPower[id]; });
+    resetCountryState();
+    $('commodity').value = 100;
+    if (btn.dataset.preset === 'reset') {
+      $('mult').value = 2; $('collapse').value = 10;
+      $('propMode').checked = false; $('unempFb').checked = false;
+    }
+    PRESETS[btn.dataset.preset]();
+    IDS.forEach(id => {
+      const els = cardEls[id];
+      els.bp.value = buyingPower[id]; els.supply.value = supplyCap[id];
+      els.fx.value = fxMove[id]; els.stim.value = stimPct[id];
+    });
     update();
   });
 });
-$('mult').addEventListener('input', update);
-$('collapse').addEventListener('input', update);
-$('propMode').addEventListener('change', update);
+['mult', 'collapse', 'commodity'].forEach(id => $(id).addEventListener('input', update));
+['propMode', 'unempFb'].forEach(id => $(id).addEventListener('change', update));
 
 /* ---------- render ---------- */
 const STATUS_LABEL = { healthy: '● Healthy', recession: '▲ Recession', collapsed: '✕ Collapsed' };
 
 function update() {
-  const multiplier = +$('mult').value;
-  const collapseT = +$('collapse').value / 100;
-  const recessionT = collapseT / 2.5;
-  $('multVal').textContent = multiplier.toFixed(1) + '×';
-  $('collapseVal').textContent = '≥ ' + Math.round(collapseT * 100) + '% GDP';
-  $('recessionHint').textContent = 'Recession threshold derives as collapse ÷ 2.5 = ' + (recessionT * 100).toFixed(1) + '% GDP damage.';
+  const g = {
+    mult: +$('mult').value,
+    collapseT: +$('collapse').value / 100,
+    commodityPrice: +$('commodity').value,
+    proportional: $('propMode').checked,
+    unempFb: $('unempFb').checked,
+  };
+  $('multVal').textContent = g.mult.toFixed(1) + '×';
+  $('collapseVal').textContent = '≥ ' + Math.round(g.collapseT * 100) + '% GDP';
+  $('commodityVal').textContent = g.commodityPrice + '%';
+  $('recessionHint').textContent = 'Recession derives as collapse ÷ 2.5 = ' +
+    (g.collapseT / 2.5 * 100).toFixed(1) + '% GDP damage. FX reserves raise each country’s own bar.';
 
-  const sim = simulate(buyingPower, multiplier, collapseT, $('propMode').checked);
-  const barMax = collapseT * 2; // bar scale: collapse tick sits at midpoint
+  const sim = simulate({ bp: buyingPower, supply: supplyCap, fx: fxMove, stim: stimPct }, g);
+  const barMax = g.collapseT * 2;
 
   let nCollapsed = 0, nRecession = 0, gdpLost = 0;
   for (const id of IDS) {
-    const st = sim.status[id], dmg = sim.damage[id];
+    const st = sim.status[id], dmg = sim.damage[id], p = sim.parts[id];
     if (st === 'collapsed') nCollapsed++;
     else if (st === 'recession') nRecession++;
     gdpLost += ECON[id].gdp * Math.min(dmg, 1);
 
-    const forced = buyingPower[id] < 100;
-    const displaySt = forced ? 'forced' : st;
+    const shocked = buyingPower[id] < 100 || supplyCap[id] < 100 || fxMove[id] < 0;
+    const displaySt = shocked ? 'forced' : st;
     const els = cardEls[id];
 
     els.card.className = 'card s-' + displaySt;
     els.dmg.textContent = fmtPct(dmg);
     els.pill.className = 'pill p-' + displaySt;
-    els.pill.textContent = forced
-      ? '◼ Shock source −' + (100 - buyingPower[id]) + '%'
-      : STATUS_LABEL[st];
+    els.pill.textContent = shocked ? '◼ Shock source' : STATUS_LABEL[st];
     els.fill.className = 'fill f-' + displaySt;
     els.fill.style.width = Math.min(dmg / barMax, 1) * 100 + '%';
-    els.tickR.style.left = (recessionT / barMax) * 100 + '%';
-    els.tickC.style.left = Math.min(collapseT / barMax, 1) * 100 + '%';
+    els.tickR.style.left = Math.min(p.recT / barMax, 1) * 100 + '%';
+    els.tickC.style.left = Math.min(p.collT / barMax, 1) * 100 + '%';
     els.bpVal.textContent = buyingPower[id] + '%';
+    els.spVal.textContent = supplyCap[id] + '%';
+    els.fxVal.textContent = (fxMove[id] > 0 ? '+' : '') + fxMove[id] + '%';
+    els.stVal.textContent = stimPct[id] + '%';
 
     let meta = '';
     if (st === 'collapsed')      meta = 'Collapsed in round ' + sim.collapseRound[id];
     else if (st === 'recession') meta = 'Fell into recession in round ' + sim.recessionRound[id];
+    if (shocked && (st === 'collapsed' || st === 'recession')) meta += ' · ' + st;
     els.meta.textContent = meta;
+
+    const bits = [];
+    if (p.dem > 0.0005) bits.push('demand ' + (p.dem * 100).toFixed(1));
+    if (p.sup > 0.0005) bits.push('supply ' + (p.sup * 100).toFixed(1));
+    if (p.rem > 0.0005) bits.push('remit ' + (p.rem * 100).toFixed(1));
+    if (Math.abs(p.com) > 0.0005) bits.push('commodity ' + (p.com >= 0 ? '' : '−') + Math.abs(p.com * 100).toFixed(1));
+    if (p.forced > 0.0005) bits.push('forced ' + (p.forced * 100).toFixed(1));
+    if (p.relief > 0.0005) bits.push('stimulus −' + (p.relief * 100).toFixed(1));
+    els.brk.textContent = bits.length ? bits.join(' · ') : '';
   }
 
   $('tCollapsed').textContent = nCollapsed;
@@ -465,7 +608,7 @@ function update() {
   tl.innerHTML = '';
   const lastRound = Math.max(0, ...Object.values(sim.recessionRound), ...Object.values(sim.collapseRound));
   if (lastRound === 0) {
-    tl.innerHTML = '<div class="timeline-empty">No shock applied — drag a buying-power slider below 100% or pick a preset.</div>';
+    tl.innerHTML = '<div class="timeline-empty">No shock applied — pull a lever on any card or pick a preset.</div>';
     return;
   }
   for (let r = 1; r <= lastRound; r++) {
